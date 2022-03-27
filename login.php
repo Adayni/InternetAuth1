@@ -1,30 +1,38 @@
 <?php
+
     //start the session
     session_start();
 
     //define and initialize variables
-    $username = $pword = "";
-    $unameEmpty = $errorPword = "";
+    $uname = $username = $pword = $password = "";
+    $unameEmpty = $erroruName = $errorPword = "";
 
-    //see if values exist for username and password. If so, redirect to Home page
+    //Action for login form. When the user clicks login, validate form and redirect to home page if login is successful
     if (isset($_POST['login'])) {
-
-        $pword = $_POST["pword"];
         
-        //FORM DATA VALIDATION - empty fields, password length, email check
+        //FORM DATA VALIDATION
+        $uname = $_POST["username"];
         if (empty($_POST["username"])) {
-            $unameEmpty = '*Incorrect username.';
-        } else if (empty($_POST["pword"]) or strlen($pword)<=8) {
-            $errorPword = '*Incorrect Password.';
+            $unameEmpty = '*Username field cannot be empty.';
+        } else if ($uname === "Guest") {
+            $erroruName = '*Invalid username';
         } else {
             $username = $_POST["username"];
-            $pword = $_POST["pword"];
+        }
+        
+        $pword = $_POST["pword"];
+        if (empty($_POST["pword"]) or strlen($pword)<=8) {
+            $errorPword = 'Password must contain at least 8 characters.';
+        } else {
+            $password = $_POST["pword"];
+        }
 
-            header('Location: index.php'); //redirects to home page once registration is successful
+        if (!empty($username) && !empty($password)) {
+            header('Location: index.php'); //redirects to home page once login is successful
         }
     }
 
-    //create cookie for access on other pages
+    //create cookie for variable access on other pages
     $cookie_name = "uname";
     $cookie_value = $username;
     setcookie("uname", $username, time() + (86400 * 30), "/");
@@ -155,8 +163,9 @@
         <div>
             <br><br>
         </div>
+
         <div class="row">
-            <!--Form-->
+            <!--Form Segment-->
             <div class="col-md-6" style="padding-left: 3%;">
             <div>
                 <br><br><br>
@@ -167,11 +176,13 @@
                             <div class="box-body">
                                 <!--Title-->
                                 <h1>Login</h1>
+                                <!--Form-->
                                 <form action="login.php" method="post">
                                     <div class="form-group">
                                         <label for=username>Username:</label>
                                         <input type="text" placeholder="e.g. JohnDoe" class="custom-field form-control" id=username name="username">
                                         <span class="help-block text-danger"><?php echo $unameEmpty; ?></span>
+                                        <span class="help-block text-danger"><?php echo $erroruName; ?></span>
                                     </div>
                                     <div class="form-group">
                                         <label for=pword>Password:</label>
@@ -199,11 +210,13 @@
         <div>
             <br>
         </div>
+
         <!--Footer-->
         <footer style="height:40px; bottom:0; width: 100%; background-color:snow;">
             <p style="text-align:center;">©Annona Academy 2022</p>
         </footer>
 
+        <!--JS functionality-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     </body>

@@ -2,7 +2,6 @@
 
     //start the session
     session_start();
-
 ?>
 
 <!DOCTYPE html>
@@ -46,24 +45,11 @@
             }
 
             /*FONTS*/
-            h1 {
-                text-align: center;
-                font-size: 65px;
-                font-family: 'Cinzel Decorative', cursive;
-                padding-top: 5%;
-            }
-
             h2 {
                 text-align: center;
                 font-size: 35px;
                 font-family: 'Cinzel Decorative', cursive;
                 padding-bottom: 20px;
-            }
-
-            h3 {
-                text-align: center;
-                font-size: 35px;
-                font-family: 'Cinzel Decorative', cursive;
             }
 
             p {

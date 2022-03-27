@@ -1,35 +1,39 @@
 <?php
+
     //start the session
     session_start();
 
     //define and initialize variables
-    $fname = $lname = $username = $email = $pword = $pwordVerif = "";
-    $fnameEmpty =$lnameEmpty = $unameEmpty = $emailEmpty = $verifEmpty = $errorEmail = $errorPword = $errorMatch = $errorName = "";
+    $fname = $firstname = $lname = $lastname = $uname = $username = $email = $eaddress = $pword = $password = $pwordVerif = $passwordVerif = "";
+    $fnameEmpty =$lnameEmpty = $unameEmpty = $emailEmpty = $verifEmpty = $errorEmail = $errorPword = $errorMatch = $errorfName = $errorlName = $erroruName = "";
 
-    //see if values exist for username and password. If so, redirect to Home page
+    //Action for registration form. When the user clicks register, validate form and redirect to home page if registration is successful
     if (isset($_POST['register'])) {
 
-        //FORM DATA VALIDATION - empty fields, password length, email check 
+        //FORM DATA VALIDATION
         $fname = $_POST["fname"];
         if (empty($_POST["fname"])) {
             $fnameEmpty = '*First name field cannot be empty.';
         } else if (!preg_match ("/^[a-zA-Z-' ]*$/", $fname)) {
-            $errorName = '*Name can only contain letters';
+            $errorfName = '*Name can only contain letters';
         } else {
-            $fname = $_POST["fname"];
+            $firstname = $_POST["fname"];
         }
         
         $lname = $_POST["lname"];
         if (empty($_POST["lname"])) {
             $lnameEmpty = '*Last name field cannot be empty.';
         } else if (!preg_match ("/^[a-zA-Z-' ]*$/", $lname)) {
-            $errorName = '*Name can only contain letters';
+            $errorlName = '*Name can only contain letters';
         } else {
-            $lname = $_POST["lname"];
+            $lastname = $_POST["lname"];
         }
         
+        $uname = $_POST["username"];
         if (empty($_POST["username"])) {
             $unameEmpty = '*Username field cannot be empty.';
+        } else if ($uname === "Guest") {
+            $erroruName = '*Invalid username';
         } else {
             $username = $_POST["username"];
         }
@@ -41,14 +45,14 @@
         } else if (!preg_match ($stuEmailPattern, $email)){
             $errorEmail = '*Please use your student email.';
         } else {
-            $email = $_POST["email"];
+            $eaddress = $_POST["email"];
         }
         
         $pword = $_POST["pword"];
-        if (empty($_POST["pword"]) || strlen($pword)>=8) {
-            $errorPword = '*Password field cannot be empty, and must contain a minimum of 8 characters.';
+        if (empty($_POST["pword"] || strlen($pword)>=8)) {
+            $errorPword = '*Password must contain a minimum of 8 characters.';
         } else {
-            $pword = $_POST["pword"];
+            $password = $_POST["pword"];
         }
         
         $pwordVerif = $_POST["pwordVerif"];
@@ -57,23 +61,25 @@
         } else if ($pword !== $pwordVerif) {
             $errorMatch = '*Passwords do not match.';
         } else {
-            $pwordVerif = $_POST["pwordVerif"];
+            $passwordVerif = $_POST["pwordVerif"];
+        }
 
+        if (!empty($firstname) && !empty($lastname) && !empty($username) && !empty($eaddress) && !empty($password) && !empty($passwordVerif)) {
             header('Location: index.php'); //redirects to home page once registration is successful
-        } 
+        }
     }
 
     //store data in .txt file
     $fp = fopen('register.txt', 'a');
-    fwrite($fp, $fname);
-    fwrite($fp, $lname);
+    fwrite($fp, $firstname);
+    fwrite($fp, $lastname);
     fwrite($fp, $username);
-    fwrite($fp, $email);
-    fwrite($fp, $pword);
-    fwrite($fp, $pwordVerif);
+    fwrite($fp, $eaddress);
+    fwrite($fp, $password);
+    fwrite($fp, $passwordVerif);
     fclose($fp);
     
-    //create cookie for access on other pages
+    //create cookie for variable access on other pages
     $cookie_name = "uname";
     $cookie_value = $username;
     setcookie("uname", $username, time() + (86400 * 30), "/");
@@ -210,7 +216,7 @@
                 <img src="../images/AnnonaAcademy nb.png">
             </div>
         
-        <!--Form-->
+        <!--Form Segment-->
             <div class="col-md-6" style="padding-right: 3%;">
                 <div class="container">
                     <div class="box-wrapper">
@@ -218,23 +224,25 @@
                             <div class="box-body">
                                 <!--Title-->
                                 <h1>Register</h1>
+                                <!--Form-->
                                 <form action="register.php" method="post">
                                     <div class="form-group">
                                         <label for=fname>First Name:</label>
                                         <input type="text" placeholder="e.g. John" class="custom-field form-control" id=fname name="fname">
                                         <span class="help-block text-danger"><?php echo $fnameEmpty; ?></span>
-                                        <span class="help-block text-danger"><?php echo $errorName; ?></span>
+                                        <span class="help-block text-danger"><?php echo $errorfName; ?></span>
                                     </div>  
                                     <div class="form-group">
                                         <label for=lname>Last Name:</label>
                                         <input type="text" placeholder="e.g. Doe" class="custom-field form-control" id=lname name="lname">
                                         <span class="help-block text-danger"><?php echo $lnameEmpty; ?></span>
-                                        <span class="help-block text-danger"><?php echo $errorName; ?></span>
+                                        <span class="help-block text-danger"><?php echo $errorlName; ?></span>
                                     </div>
                                     <div class="form-group">
                                         <label for=username>Username:</label>
                                         <input type="text" placeholder="e.g. JohnDoe" class="custom-field form-control" id=username name="username">
                                         <span class="help-block text-danger"><?php echo $unameEmpty; ?></span>
+                                        <span class="help-block text-danger"><?php echo $erroruName; ?></span>
                                     </div>
                                     <div class="form-group">
                                         <label for=email>Email Address:</label>
@@ -270,11 +278,13 @@
         <div>
             <br>
         </div>
+
         <!--Footer-->
         <footer style="height:40px; bottom:0; width: 100%; background-color:snow;">
             <p style="text-align:center;">©Annona Academy 2022</p>
         </footer>
 
+        <!--JS functionality-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     </body>

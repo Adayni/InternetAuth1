@@ -4,28 +4,29 @@
     session_start();
 
     //define and initialize variables
-    $fname = $lname = $subject = $email = $msg = "";
-    $fnameEmpty =$lnameEmpty = $emailEmpty = $subjectEmpty = $msgEmpty = $errorEmail = $errorName = "";
+    $fname = $firstname = $lname = $lastname = $subject = $email = $eaddress = $msg = "";
+    $fnameEmpty = $lnameEmpty = $emailEmpty = $subjectEmpty = $msgEmpty = $errorEmail = $errorfName = $errorlName = "";
 
-    //validate contact form information
+    //Action for contact form. When the user clicks send, validate form and redirect to confirmation page if message is sent successfully
     if (isset($_POST['send'])) {
 
+        //FORM DATA VALIDATION
         $fname = $_POST["fname"];
         if (empty($_POST["fname"])) {
             $fnameEmpty = '*First name field cannot be empty.';
         } else if (!preg_match ("/^[a-zA-Z-' ]*$/", $fname)) {
-            $errorName = '*Name can only contain letters';
+            $errorfName = '*Name can only contain letters';
         } else {
-            $fname = $_POST["fname"];
+            $firstname = $_POST["fname"];
         }
        
         $lname = $_POST["lname"];
         if (empty($_POST["lname"])) {
             $lnameEmpty = '*Last name field cannot be empty.';
         } else if (!preg_match ("/^[a-zA-Z-' ]*$/", $lname)) {
-            $errorName = '*Name can only contain letters';
+            $errorlName = '*Name can only contain letters';
         } else {
-            $lname = $_POST["lname"];
+            $lastname = $_POST["lname"];
         }
 
         $stuEmailPattern = "^[_a-z0-9-]+(\.[a-z0-9-]+)*@stu.aa.edu.us^";
@@ -35,7 +36,7 @@
         } else if (!preg_match ($stuEmailPattern, $email)){
             $errorEmail = '*Please use your student email.';
         } else {
-            $email = $_POST["email"];
+            $eaddress = $_POST["email"];
         }
         
         if (empty($_POST["subject"])) {
@@ -48,11 +49,14 @@
             $msgEmpty = '*Please type a message so we can best assist you.';
         } else {
             $msg = $_POST["msg"];
-            
-            header('Location: confirmation.php'); //shows confirmation message
+        }
+
+        if (!empty($firstname) && !empty($lastname) && !empty($eaddress) && !empty($subject) && !empty($msg)) {
+            header('Location: confirmation.php'); //redirects to confirmation page once message is successfully sent
         }
     }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -206,33 +210,34 @@
                             <br><br>Tel: 434-200-7423/434-209-9155
                             <br> Em: studeat@aa.edu.us
                             <br><br>Socials:
-                            <br><img src="../images/fb.png" style="width:20px; height:20px">&nbsp;studeatataa
-                            <br><img src="../images/ig.png" style="width:20px; height:20px">&nbsp;studeat_annonaacademy
+                            <br><img src="../images/fb.png" style="width:20px; height:20px">&nbsp;studeataa
+                            <br><img src="../images/ig.png" style="width:20px; height:20px">&nbsp;studeat_aa
                         </p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!--Form-->
+        <!--Form Segment-->
         <section id="sec2">
             <div class="container" style="padding-bottom: 25px">
                 <div class="row">
                     <div class="col w-75 mx-auto">
                         <!--Title-->
                         <h3 style="padding-top:25px">Contact Us</h3>
+                        <!--Form-->
                         <form action="contact.php" method="post" style="background-color: rgba(239, 233, 220, 0.55); padding-left: 25px; padding-right: 25px;">
                             <div class="form-group">
                                 <label for=fname>First Name:</label>
                                 <input type="text" placeholder="e.g. John" class="custom-field form-control" id=fname name="fname">
                                 <span class="help-block text-danger"><?php echo $fnameEmpty; ?></span>
-                                <span class="help-block text-danger"><?php echo $errorName; ?></span>
+                                <span class="help-block text-danger"><?php echo $errorfName; ?></span>
                             </div>
                             <div class="form-group">
                                 <label for=lname>Last Name:</label>
                                 <input type="text" placeholder="e.g. Doe" class="custom-field form-control" id=lname name="lname">
                                 <span class="help-block text-danger"><?php echo $lnameEmpty; ?></span>
-                                <span class="help-block text-danger"><?php echo $errorName; ?></span>
+                                <span class="help-block text-danger"><?php echo $errorlName; ?></span>
                             </div>
                             <div class="form-group">
                                 <label for=email>Email Address:</label>
@@ -270,6 +275,7 @@
             <p style="text-align:center;">©Annona Academy 2022</p>
         </footer>
 
+        <!--JS functionality-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     </body>

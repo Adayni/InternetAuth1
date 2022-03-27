@@ -3,15 +3,12 @@
     //start the session
     session_start();
 
-    //set session variables from form input
+    //set session variables from registration or login form input
     if (isset($_COOKIE['uname'])) {
-        
-        $_SESSION['username'] = ($_COOKIE['uname']);
-
+        $_SESSION['username'] = htmlentities($_COOKIE['uname']);
     } else {
         $_SESSION['username'] = 'Guest';
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -158,7 +155,7 @@
             </div>
         </nav>
 
-        <!--Section 1-->
+        <!--Section 1: Greeting-->
         <section id="sec1">
             <div class="row">
                 <div class="col md-6 d-flex justify-content-center">
@@ -167,6 +164,7 @@
                 <div class="col md-6 justify-content-center" style="padding-top:15%;">
                     <h1>Welcome, <?php echo $_SESSION['username']; ?></h1>
                     <div class="d-grid gap-2 col-9 mx-auto">
+                        <!--Display register and login buttons for logged out users and display logout button for logged in users-->
                         <?php
                             if ($_SESSION['username'] === 'Guest'){
                                 echo '<a role="button" href="register.php" class="btn" id="logbtn">Register</a>';
@@ -182,7 +180,7 @@
 
         <div style="background-color:snow;"><br></div>
 
-        <!--Section 2-->
+        <!--Section 2: Logo and Tagline-->
         <section id="sec2">
             <h3 class="text-center" style="font-size:55px;">Our Vegan Catering Programme</h3>
             <img src="../images/Stud-eatLogo nb.png" class="mx-auto d-block" style="padding-top: 40px; padding-bottom: 40px; height:30%; width:30%;">
@@ -191,7 +189,7 @@
 
         <div style="background-color:#ddf8d7;"><br></div>
 
-        <!--Section 3-->
+        <!--Section 3: About Us-->
         <section id="sec3">
             <h2>About the Initiative</h2>
             <p>As a Seventh-Day Adventist school, we, here at Annona Academy, believe in the principles of health, including optimal nutrition,
@@ -210,7 +208,7 @@
 
         <div style="background-color:snow;"><br></div>
 
-        <!--Section 4-->
+        <!--Section 4: Further Information-->
         <section id="sec4">
             <h2>Our Meals</h2>
             <p>Our meal plans are carefully curated to produce holistic meals that contain adequate portions of each of the necessary food groups:
@@ -241,6 +239,7 @@
             <p style="text-align:center;">©Annona Academy 2022</p>
         </footer>
 
+        <!--JS functionality-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     </body>

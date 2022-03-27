@@ -1,20 +1,19 @@
 <?php
+
     //start the session
     session_start();
 
-    //function creation
+    //function to show inaccessibility warning to logged out users
     function loggedOutAlert($msg){
         echo "<script type='text/javascript'>alert('$msg');</script>";
     }
 
     //make page only accessible to logged in users
     if (isset($_COOKIE['uname'])) {
-        
         $_SESSION['username'] = ($_COOKIE['uname']);
-
     } else {
-        loggedOutAlert("Only logged in users can view this page!");
-        echo "<script type='text/javascript'>location.href='index.php';</script>";
+        loggedOutAlert("Only logged in users can view this page!"); //call function created above
+        echo "<script type='text/javascript'>location.href='index.php';</script>";//redirect logged out user
     }
 ?>
 
@@ -173,7 +172,7 @@
             </div>
         </nav>
 
-        <!--Section 1-->
+        <!--Section 1: Greeting-->
         <section id="sec1">
             <div class="row">
                 <div class="col md-6 d-flex justify-content-center">
@@ -188,8 +187,9 @@
 
         <div style="background-color:snow;"><br></div>
         
-        <!--Breakfast-->
         <section id="sec2">
+
+            <!--Breakfast-->
             <h2 style="padding-top: 20px;">Breakfast</h2>
             <h4>Served from 7-9:30 A.M.</h4>
             <div class="container">
@@ -399,6 +399,7 @@
             <p style="text-align:center;">©Annona Academy 2022</p>
         </footer>
 
+        <!--JS functionality-->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
     </body>
