@@ -5,7 +5,7 @@
 
     //define and initialize variables
     $uname = $username = $pword = $password = "";
-    $unameEmpty = $erroruName = $errorPword = "";
+    $unameEmpty = $pwordEmpty = $erroruName = $errorPword = "";
 
     //Action for login form. When the user clicks login, validate form and redirect to home page if login is successful
     if (isset($_POST['login'])) {
@@ -21,8 +21,10 @@
         }
         
         $pword = $_POST["pword"];
-        if (empty($_POST["pword"]) or strlen($pword)<=8) {
-            $errorPword = 'Password must contain at least 8 characters.';
+        if (empty($_POST["pword"])) {
+            $pwordEmpty = '*Password field cannot be empty.';
+        } else if (strlen($pword)>=8) {
+            $errorPword = '*Password must contain a minimum of 8 characters.';
         } else {
             $password = $_POST["pword"];
         }
@@ -187,6 +189,7 @@
                                     <div class="form-group">
                                         <label for=pword>Password:</label>
                                         <input type="password" placeholder="Minimum of 8 characters" class="custom-field form-control" id=pword name="pword">
+                                        <span class="help-block text-danger"><?php echo $pwordEmpty; ?></span>
                                         <span class="help-block text-danger"><?php echo $errorPword; ?></span>
                                     </div><br>
                                     <div class="d-grid gap-4 form-group text-center">

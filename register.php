@@ -5,7 +5,7 @@
 
     //define and initialize variables
     $fname = $firstname = $lname = $lastname = $uname = $username = $email = $eaddress = $pword = $password = $pwordVerif = $passwordVerif = "";
-    $fnameEmpty =$lnameEmpty = $unameEmpty = $emailEmpty = $verifEmpty = $errorEmail = $errorPword = $errorMatch = $errorfName = $errorlName = $erroruName = "";
+    $fnameEmpty =$lnameEmpty = $unameEmpty = $emailEmpty = $pwordEmpty = $verifEmpty = $errorEmail = $errorPword = $errorMatch = $errorfName = $errorlName = $erroruName = "";
 
     //Action for registration form. When the user clicks register, validate form and redirect to home page if registration is successful
     if (isset($_POST['register'])) {
@@ -49,7 +49,9 @@
         }
         
         $pword = $_POST["pword"];
-        if (empty($_POST["pword"] || strlen($pword)>=8)) {
+        if (empty($_POST["pword"])) {
+            $pwordEmpty = '*Password field cannot be empty.';
+        } else if (strlen($pword)>=8) {
             $errorPword = '*Password must contain a minimum of 8 characters.';
         } else {
             $password = $_POST["pword"];
@@ -253,6 +255,7 @@
                                     <div class="form-group">
                                         <label for=pword>Password:</label>
                                         <input type="password" placeholder="Minimum of 8 characters" class="custom-field form-control" id=pword name="pword">
+                                        <span class="help-block text-danger"><?php echo $pwordEmpty; ?></span>
                                         <span class="help-block text-danger"><?php echo $errorPword; ?></span>
                                     </div>
                                     <div class="form-group">
