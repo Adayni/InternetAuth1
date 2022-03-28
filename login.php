@@ -23,7 +23,7 @@
         $pword = $_POST["pword"];
         if (empty($_POST["pword"])) {
             $pwordEmpty = '*Password field cannot be empty.';
-        } else if (strlen($pword)>=8) {
+        } else if (strlen($pword)<8) {
             $errorPword = '*Password must contain a minimum of 8 characters.';
         } else {
             $password = $_POST["pword"];
